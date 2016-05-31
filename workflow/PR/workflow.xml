@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow-app name="wikiserach-wf" xmlns="uri:oozie:workflow:0.2">
+     <start to="OutgoingLinks"/>
+
+<action name="OutgoingLinks">
+	<java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.parser.OutGoingLinks</main-class>
+	    <arg>${inputDir}</arg>
+	    <arg>/user/vimox/wiki2/OutgoingLinks_Output</arg>
+	</java>
+	<ok to="PageRank"/>
+	<error to="kill"/>
+</action>
+
+<action name="PageRank">
+	<java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.core.PageRank</main-class>
+	    <arg>/user/vimox/wiki2/OutgoingLinks_Output</arg>
+	    <arg>/user/vimox/wiki2/PageRank_Output</arg>
+	</java>
+	<ok to="PageRank_BulkLoad"/>
+	<error to="kill"/>
+</action>
+
+<action name="PageRank_BulkLoad">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.hbase.bulkload.PageRankBulkLoader</main-class>
+	  	<arg>/user/vimox/wiki2/PageRank_Output</arg>
+	  	<arg>/user/vimox/wiki2/PageRank_BulkLoad</arg>
+	</java>
+	<ok to="end"/>
+	<error to="kill"/>
+</action>
+
+<kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+</kill>
+<end name="end"/>
+</workflow-app>

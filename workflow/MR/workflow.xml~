@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow-app name="wikiserach-wf" xmlns="uri:oozie:workflow:0.2">
+<start to="FII"/>
+<action name="FII">
+	<java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.parser.FII</main-class>
+	    <arg>${inputDir}</arg>
+	    <arg>/user/vimox/wiki2/FII_Output</arg>
+	</java>
+	<ok to="MR-Job"/>
+	<error to="kill"/>
+</action>
+<fork name="MR-Job">
+     <path start="DocIDTitle" />
+     <path start="TitleDocID" />
+</fork>
+
+<action name="DocIDTitle">
+	<java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.parser.DocIDTitle</main-class>
+	    <arg>${inputDir}</arg>
+	    <arg>/user/vimox/wiki2/DocIdTitle_Output</arg>
+	</java>
+	<ok to="MR-Completed"/>
+	<error to="kill"/>
+</action>
+
+<action name="TitleDocID">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.parser.TitleDocID</main-class>
+	  	<arg>${inputDir}</arg>
+	  	<arg>/user/vimox/wiki2/TitleDocID_Output</arg>
+	</java>
+	<ok to="MR-Completed"/>
+	<error to="kill"/>
+</action>
+
+<join name="MR-Completed" to="IDF"/>
+
+<action name="IDF">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.core.IDF</main-class>
+	  	<arg>/user/vimox/wiki2/FII_Output</arg>
+	  	<arg>/user/vimox/wiki2/IDF_Output</arg>
+	</java>
+	<ok to="HFile-JOB"/>
+	<error to="kill"/>
+</action>
+
+ 	<fork name="HFile-JOB">
+        <path start="IDF_BulkLoad" />
+        <path start="DocIDTitle_BulkLoad" />
+		<path start="TitleDocID_BulkLoad" />
+  </fork>
+
+<action name="IDF_BulkLoad">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.hbase.bulkload.InverseIndexBulkLoader</main-class>
+	  	<arg>/user/vimox/wiki2/IDF_Output</arg>
+	  	<arg>/user/vimox/wiki2/IDF_BulkLoad</arg>
+	</java>
+	<ok to="HFile-Completed"/>
+	<error to="kill"/>
+</action>
+
+<action name="DocIDTitle_BulkLoad">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.hbase.bulkload.DocIDTitleBulkLoader</main-class>
+	  	<arg>/user/vimox/wiki2/DocIdTitle_Output</arg>
+	  	<arg>/user/vimox/wiki2/DocIDTitle_BulkLoad</arg>
+	</java>
+	<ok to="HFile-Completed"/>
+	<error to="kill"/>
+</action>
+
+<action name="DocWordCount_BulkLoad">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.hbase.bulkload.DocWordCountBulkLoader</main-class>
+	  	<arg>/user/vimox/wiki2/FII_Output</arg>
+	  	<arg>/user/vimox/wiki2/FII_BulkLoad</arg>
+	</java>
+	<ok to="HFile-Completed"/>
+	<error to="kill"/>
+</action>
+
+<action name="TitleDocID_BulkLoad">
+   <java>
+	    <job-tracker>${jobTracker}</job-tracker>
+	    <name-node>${nameNode}</name-node>
+	    <main-class> xyz.brnbn.wikisearch.index.hbase.bulkload.TitleDocIDBulkLoader</main-class>
+	  	<arg>/user/vimox/wiki2/TitleDocID_Output</arg>
+	  	<arg>/user/vimox/wiki2/TitleDocID_BulkLoad</arg>
+	</java>
+	<ok to="HFile-Completed"/>
+	<error to="kill"/>
+</action>
+
+<join name="HFile-Completed" to="end"/>
+
+<kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+</kill>
+<end name="end"/>
+</workflow-app>
