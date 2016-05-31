@@ -32,9 +32,9 @@
 ![Special Search](3.jpg)
 
 ### WorkFlow
-![Oozie workflow of Map-Reduce Jobs](mrjob.png)
+[Oozie workflow of Map-Reduce Jobs](mrjob.png)
 
-![Oozie workflow of Page Rank Map-reduce Jobs](PR.png)
+[Oozie workflow of Page Rank Map-reduce Jobs](PR.png)
 
 ### Page Rank Graph Visualization
 
@@ -44,8 +44,8 @@
 
 ### Tableau Visualization Links
 
-	+ [PageRank Visualization](http://public.tableau.com/profile/vimox#!/vizhome/PR_Final_0/Sheet1)
-	+ [TF Visualization](http://public.tableau.com/profile/vimox#!/vizhome/FII_Final/Sheet1) 
+	- [PageRank Visualization](http://public.tableau.com/profile/vimox#!/vizhome/PR_Final_0/Sheet1)
+	- [TF Visualization](http://public.tableau.com/profile/vimox#!/vizhome/FII_Final/Sheet1) 
 	
 Team:-
 - Vimox(myself)
