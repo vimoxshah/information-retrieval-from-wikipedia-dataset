@@ -32,9 +32,12 @@
 ![Special Search](3.jpg)
 
 ### WorkFlow
-[Oozie workflow of Map-Reduce Jobs](mrjob.png)
 
-[Oozie workflow of Page Rank Map-reduce Jobs](PR.png)
+* Oozie workflow of Map-Reduce Jobs
+![Oozie workflow of Map-Reduce Jobs](mrjob.png)
+
+* Oozie workflow of Page Rank Map-reduce Jobs
+![Oozie workflow of Page Rank Map-reduce Jobs](PR.png)
 
 ### Page Rank Graph Visualization
 
