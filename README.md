@@ -44,8 +44,8 @@
 
 ### Tableau Visualization Links
 
-	- [PageRank Visualization](http://public.tableau.com/profile/vimox#!/vizhome/PR_Final_0/Sheet1)
-	- [TF Visualization](http://public.tableau.com/profile/vimox#!/vizhome/FII_Final/Sheet1) 
+- [PageRank Visualization](http://public.tableau.com/profile/vimox#!/vizhome/PR_Final_0/Sheet1)
+- [TF Visualization](http://public.tableau.com/profile/vimox#!/vizhome/FII_Final/Sheet1) 
 	
 Team:-
 - Vimox(myself)
