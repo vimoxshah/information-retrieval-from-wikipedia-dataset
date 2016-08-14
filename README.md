@@ -55,5 +55,5 @@ Team:-
 - [Sagar Patel](http://github.com/sagarpatel26)
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vimoxshah/information-retrieval-from-wikipedia-dataset/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 
